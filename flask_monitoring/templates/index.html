@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salsabil Monitoring</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <main class="page">
+      <header class="header">
+        <div>
+          <p class="eyebrow">REAL-TIME MONITORING</p>
+          <h1>Tableau de supervision Salsabil</h1>
+        </div>
+        <div class="header-actions">
+          <button id="notify-btn" class="btn">Activer notifications</button>
+          <button id="sound-btn" class="btn">Activer son</button>
+        </div>
+      </header>
+
+      <section class="status-grid">
+        <article class="panel">
+          <p class="label">Flash Count</p>
+          <p id="flash-value" class="value">--</p>
+        </article>
+
+        <article class="panel">
+          <p class="label">Defaut</p>
+          <p id="defect-value" class="value">--</p>
+        </article>
+
+        <article class="panel" id="priority-panel">
+          <p class="label">Priorite</p>
+          <p id="priority-value" class="value">--</p>
+        </article>
+
+        <article class="panel" id="status-panel">
+          <p class="label">Statut</p>
+          <p id="status-value" class="value">--</p>
+        </article>
+      </section>
+
+      <section class="meta-row">
+        <article class="panel wide">
+          <p class="label">Horodatage</p>
+          <p id="timestamp-value" class="value small">--</p>
+        </article>
+
+        <article class="panel wide">
+          <p class="label">Etat de connexion</p>
+          <p id="connection-value" class="value small">Connexion en cours...</p>
+        </article>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="history-header">
+          <h2>Historique (10 derniers evenements)</h2>
+        </div>
+        <ul id="history-list" class="history-list"></ul>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
