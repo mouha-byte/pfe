@@ -21,6 +21,7 @@ DEFECTS = [
 
 PRIORITIES = ['A', 'B']
 STATUSES = ['OPEN', 'CLOSED']
+PORTS = [f'PORT-{index:02d}' for index in range(1, 13)]
 
 
 def generate_status() -> dict[str, str | int]:
@@ -28,11 +29,13 @@ def generate_status() -> dict[str, str | int]:
     priority = random.choices(PRIORITIES, weights=(0.35, 0.65), k=1)[0]
     status = random.choices(STATUSES, weights=(0.55, 0.45), k=1)[0]
     defect = random.choice(DEFECTS)
+    port = random.choice(PORTS)
 
     if status == 'CLOSED' and flash == 0:
         defect = 'Aucun defaut'
 
     return {
+        'port': port,
         'flash': flash,
         'defect': defect,
         'priority': priority,

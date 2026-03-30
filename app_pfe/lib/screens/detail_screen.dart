@@ -4,10 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/defect_status.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({
-    super.key,
-    required this.status,
-  });
+  const DetailScreen({super.key, required this.status});
 
   final DefectStatus status;
 
@@ -29,16 +26,15 @@ class DetailScreen extends StatelessWidget {
     final color = status.statusUpper == 'CLOSED'
         ? Colors.green.shade700
         : status.priorityUpper == 'A'
-            ? Colors.red.shade700
-            : Colors.orange.shade700;
+        ? Colors.red.shade700
+        : Colors.orange.shade700;
 
-    final formattedDate =
-        DateFormat('dd/MM/yyyy HH:mm:ss').format(status.timestamp.toLocal());
+    final formattedDate = DateFormat(
+      'dd/MM/yyyy HH:mm:ss',
+    ).format(status.timestamp.toLocal());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail Defaut'),
-      ),
+      appBar: AppBar(title: const Text('Detail Defaut')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -46,7 +42,9 @@ class DetailScreen extends StatelessWidget {
           children: [
             Card(
               elevation: 1,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
@@ -66,16 +64,18 @@ class DetailScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             status.defect,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
+                            style: Theme.of(context).textTheme.headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    _InfoRow(label: 'Flash count', value: status.flash.toString()),
+                    _InfoRow(label: 'Port', value: status.port),
+                    _InfoRow(
+                      label: 'Flash count',
+                      value: status.flash.toString(),
+                    ),
                     _InfoRow(label: 'Priorite', value: status.priorityUpper),
                     _InfoRow(label: 'Statut', value: status.statusUpper),
                     _InfoRow(label: 'Horodatage', value: formattedDate),
@@ -87,7 +87,9 @@ class DetailScreen extends StatelessWidget {
             Card(
               elevation: 0,
               color: Colors.blueGrey.shade50,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -96,8 +98,8 @@ class DetailScreen extends StatelessWidget {
                     Text(
                       'Explication du flash count',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -116,10 +118,7 @@ class DetailScreen extends StatelessWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.label,
-    required this.value,
-  });
+  const _InfoRow({required this.label, required this.value});
 
   final String label;
   final String value;
@@ -136,16 +135,13 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               '$label :',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.blueGrey.shade700,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: Colors.blueGrey.shade700,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+            child: Text(value, style: Theme.of(context).textTheme.bodyLarge),
           ),
         ],
       ),

@@ -9,15 +9,30 @@ import '../services/status_api_service.dart';
 import '../services/status_cache_service.dart';
 
 class DashboardProvider extends ChangeNotifier {
+  static const List<String> _monitoredPorts = <String>[
+    'PORT-01',
+    'PORT-02',
+    'PORT-03',
+    'PORT-04',
+    'PORT-05',
+    'PORT-06',
+    'PORT-07',
+    'PORT-08',
+    'PORT-09',
+    'PORT-10',
+    'PORT-11',
+    'PORT-12',
+  ];
+
   DashboardProvider({
     required StatusApiService apiService,
     required StatusCacheService cacheService,
     required NotificationService notificationService,
     this.refreshInterval = const Duration(seconds: 2),
     this.historyLimit = 20,
-  })  : _apiService = apiService,
-        _cacheService = cacheService,
-        _notificationService = notificationService;
+  }) : _apiService = apiService,
+       _cacheService = cacheService,
+       _notificationService = notificationService;
 
   final StatusApiService _apiService;
   final StatusCacheService _cacheService;
@@ -26,6 +41,7 @@ class DashboardProvider extends ChangeNotifier {
   final int historyLimit;
 
   final List<DefectStatus> _history = <DefectStatus>[];
+  final Map<String, DefectStatus> _latestByPort = <String, DefectStatus>{};
 
   bool _isLoading = false;
   bool _isInitialized = false;
@@ -40,7 +56,15 @@ class DashboardProvider extends ChangeNotifier {
   String? get debugCause => _debugCause;
   String get apiBaseUrl => _apiService.baseUrl;
   DateTime? get lastUpdatedAt => _lastUpdatedAt;
+  UnmodifiableListView<String> get monitoredPorts =>
+      UnmodifiableListView<String>(_monitoredPorts);
   DefectStatus? get latest => _history.isEmpty ? null : _history.first;
+  UnmodifiableListView<DefectStatus> get latestByPort {
+    final latestItems = _latestByPort.values.toList(growable: false)
+      ..sort((a, b) => a.port.compareTo(b.port));
+    return UnmodifiableListView<DefectStatus>(latestItems);
+  }
+
   UnmodifiableListView<DefectStatus> get history =>
       UnmodifiableListView<DefectStatus>(_history);
 
@@ -100,11 +124,14 @@ class DashboardProvider extends ChangeNotifier {
     _history
       ..clear()
       ..addAll(cached);
+    _rebuildLatestByPort();
     _lastUpdatedAt = DateTime.now();
     notifyListeners();
   }
 
   void _insertStatus(DefectStatus status) {
+    _latestByPort[status.port] = status;
+
     if (_history.isNotEmpty && _history.first.uniqueKey == status.uniqueKey) {
       _history[0] = status;
       return;
@@ -113,6 +140,13 @@ class DashboardProvider extends ChangeNotifier {
     _history.insert(0, status);
     if (_history.length > historyLimit) {
       _history.removeRange(historyLimit, _history.length);
+    }
+  }
+
+  void _rebuildLatestByPort() {
+    _latestByPort.clear();
+    for (final item in _history) {
+      _latestByPort.putIfAbsent(item.port, () => item);
     }
   }
 

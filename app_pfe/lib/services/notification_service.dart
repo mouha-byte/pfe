@@ -1,11 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
 
 import '../models/defect_status.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
+  static const String _channelKey = 'critical_alerts_channel';
 
   bool _isInitialized = false;
 
@@ -20,21 +20,19 @@ class NotificationService {
     }
 
     try {
-      const androidSettings =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
-      const iosSettings = DarwinInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
-      );
-
-      const initSettings = InitializationSettings(
-        android: androidSettings,
-        iOS: iosSettings,
-        macOS: iosSettings,
-      );
-
-      await _plugin.initialize(initSettings);
+      await AwesomeNotifications().initialize(null, [
+        NotificationChannel(
+          channelKey: _channelKey,
+          channelName: 'Critical Alerts',
+          channelDescription: 'Alerts for priority A or OPEN defects',
+          importance: NotificationImportance.Max,
+          defaultColor: const Color(0xFF1D466A),
+          ledColor: Colors.white,
+          playSound: true,
+          enableVibration: true,
+          channelShowBadge: true,
+        ),
+      ], debug: false);
       await _requestPermissions();
       _isInitialized = true;
     } catch (_) {
@@ -43,18 +41,10 @@ class NotificationService {
   }
 
   Future<void> _requestPermissions() async {
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-    await android?.requestNotificationsPermission();
-
-    final ios =
-        _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
-    await ios?.requestPermissions(alert: true, badge: true, sound: true);
-
-    final macos = _plugin
-        .resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>();
-    await macos?.requestPermissions(alert: true, badge: true, sound: true);
+    final isAllowed = await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowed) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
   }
 
   Future<void> showCriticalAlert(DefectStatus status) async {
@@ -67,27 +57,22 @@ class NotificationService {
     }
 
     try {
-      const androidDetails = AndroidNotificationDetails(
-        'critical_alerts_channel',
-        'Critical Alerts',
-        channelDescription: 'Alerts for priority A or OPEN defects',
-        importance: Importance.max,
-        priority: Priority.high,
-      );
-
-      const details = NotificationDetails(
-        android: androidDetails,
-        iOS: DarwinNotificationDetails(),
-        macOS: DarwinNotificationDetails(),
-      );
-
-      final title =
-          status.priorityUpper == 'A' ? 'Priorite A detectee' : 'Defaut OPEN detecte';
+      final title = status.priorityUpper == 'A'
+          ? 'Priorite A detectee'
+          : 'Defaut OPEN detecte';
       final body =
           '${status.defect} - Flash: ${status.flash} - Statut: ${status.statusUpper}';
 
       final id = status.timestamp.millisecondsSinceEpoch % 2147483647;
-      await _plugin.show(id, title, body, details);
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: id,
+          channelKey: _channelKey,
+          title: title,
+          body: body,
+          notificationLayout: NotificationLayout.Default,
+        ),
+      );
     } catch (_) {
       // Ignore local notification failures to keep monitoring flow stable.
     }

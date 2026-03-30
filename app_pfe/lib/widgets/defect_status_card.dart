@@ -29,8 +29,9 @@ class DefectStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = _accentColor();
-    final formattedDate =
-        DateFormat('dd/MM/yyyy HH:mm:ss').format(status.timestamp.toLocal());
+    final formattedDate = DateFormat(
+      'dd/MM/yyyy HH:mm:ss',
+    ).format(status.timestamp.toLocal());
 
     return Card(
       margin: EdgeInsets.zero,
@@ -40,9 +41,7 @@ class DefectStatusCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border(
-              left: BorderSide(color: accent, width: 6),
-            ),
+            border: Border(left: BorderSide(color: accent, width: 6)),
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
@@ -77,7 +76,8 @@ class DefectStatusCard extends StatelessWidget {
                     children: [
                       Text(
                         status.defect,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF17334A),
                             ),
@@ -86,14 +86,19 @@ class DefectStatusCard extends StatelessWidget {
                       Text(
                         'Flash: ${status.flash}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.blueGrey.shade800,
-                            ),
+                          color: Colors.blueGrey.shade800,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
                         children: [
+                          _Tag(
+                            label: status.port,
+                            color: const Color(0xFFDCEAF8),
+                            textColor: const Color(0xFF1D466A),
+                          ),
                           _Tag(
                             label: 'Priorite ${status.priorityUpper}',
                             color: status.priorityUpper == 'A'
@@ -135,10 +140,7 @@ class DefectStatusCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Icon(
-                  Icons.chevron_right,
-                  color: Colors.grey.shade400,
-                ),
+                Icon(Icons.chevron_right, color: Colors.grey.shade400),
               ],
             ),
           ),
@@ -170,9 +172,9 @@ class _Tag extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
