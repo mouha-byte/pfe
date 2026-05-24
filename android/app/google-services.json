@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "57024455215",
+    "firebase_url": "https://projet-pfe-5a26a-default-rtdb.firebaseio.com",
+    "project_id": "projet-pfe-5a26a",
+    "storage_bucket": "projet-pfe-5a26a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57024455215:android:44105af1087c03f03b9cda",
+        "android_client_info": {
+          "package_name": "application.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1KddeQjwtDVv1tZidIHBrOE4vx8eKBUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57024455215:android:2af0d66aeec864be3b9cda",
+        "android_client_info": {
+          "package_name": "com.example.app_pfe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1KddeQjwtDVv1tZidIHBrOE4vx8eKBUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
