@@ -228,48 +228,6 @@ class _OverviewCard extends StatelessWidget {
   }
 }
 
-class _ConnectionBadge extends StatelessWidget {
-  const _ConnectionBadge({required this.isRealtime});
-
-  final bool isRealtime;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isRealtime
-        ? const Color(0xFF2E7D32)
-        : const Color(0xFF9F5600);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: color.withValues(alpha: 0.4)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isRealtime ? Icons.bolt_rounded : Icons.sync_rounded,
-              color: color,
-              size: 14,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              isRealtime ? 'Temps reel' : 'REST',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _QuickStats extends StatelessWidget {
   const _QuickStats({
     required this.totalPorts,

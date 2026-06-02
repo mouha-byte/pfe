@@ -14,7 +14,7 @@ class DashboardProvider extends ChangeNotifier {
     required StatusCacheService cacheService,
     required NotificationService notificationService,
     this.refreshInterval = const Duration(seconds: 2),
-    this.porteCount = 20,
+    this.porteCount = 12,
   }) : _apiService = apiService,
        _cacheService = cacheService,
        _notificationService = notificationService,
